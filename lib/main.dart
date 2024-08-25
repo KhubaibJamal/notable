@@ -1,6 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:notable/application/note/note_bloc.dart';
 import 'package:notable/firebase_options.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:notable/presentation/screens/home/home.dart';
+import 'package:notable/presentation/utils/theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,11 +19,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Notable',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<NoteBloc>(create: (BuildContext context) => NoteBloc()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Notable',
+        theme: lightTheme,
+        home: const HomeScreen(),
       ),
     );
   }

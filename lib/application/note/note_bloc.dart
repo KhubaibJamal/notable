@@ -9,18 +9,20 @@ part 'note_state.dart';
 
 class NoteBloc extends Bloc<NoteEvent, NoteState> {
   NoteRepo noteRepo = NoteRepo();
+
   NoteBloc() : super(NoteInitial()) {
     on<LoadNotes>(_onLoadNotes);
     on<AddNote>(_onAddNote);
     on<UpdateNote>(_onUpdateNote);
     on<DeleteNote>(_onDeleteNote);
-    // on<NoteEvent>((event, emit) {});
+    on<SearchNotes>(_onSearchNotes);
   }
 
   Future<void> _onLoadNotes(LoadNotes event, Emitter<NoteState> emit) async {
     emit(NoteLoading());
     try {
       final notes = await noteRepo.getAllNotes();
+      notes.sort((a, b) => b.createAt!.compareTo(a.createAt!));
       emit(NoteLoaded(notes));
     } catch (e) {
       if (kDebugMode) {
@@ -62,6 +64,18 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
       if (kDebugMode) {
         print("ERROR WHILE DELETING NOTES");
       }
+    }
+  }
+
+  void _onSearchNotes(SearchNotes event, Emitter<NoteState> emit) {
+    if (state is NoteLoaded) {
+      final notes = (state as NoteLoaded)
+          .notes
+          .where((note) =>
+              note.title != null &&
+              note.title!.toLowerCase().contains(event.query.toLowerCase()))
+          .toList();
+      emit(NoteLoaded(notes));
     }
   }
 }

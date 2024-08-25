@@ -26,9 +26,15 @@ class NoteService {
   Future<List<NoteModel>> getAllNotes() async {
     try {
       QuerySnapshot querySnapshot = await _firestore.collection('notes').get();
-      return querySnapshot.docs
-          .map((doc) => NoteModel.fromJson(doc.data() as Map<String, dynamic>))
+
+      List<NoteModel> notes = querySnapshot.docs
+          .map((doc) => NoteModel.fromJson(doc.data() as Map<String, dynamic>)
+              .copyWith(id: doc.id))
           .toList();
+
+      notes.sort((a, b) => b.createAt!.compareTo(a.createAt!));
+
+      return notes;
     } catch (e) {
       print("Failed to get notes: $e");
       return [];

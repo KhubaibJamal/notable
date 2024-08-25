@@ -9,7 +9,9 @@ class HomeScreen extends StatelessWidget {
       body: Padding(
         padding: EdgeInsets.all(8.0),
         child: Column(
-          children: [],
+          children: [
+            
+          ],
         ),
       ),
     );

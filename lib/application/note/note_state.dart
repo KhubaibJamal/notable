@@ -20,11 +20,4 @@ class NoteLoaded extends NoteState {
   List<Object?> get props => [notes];
 }
 
-class SearchNotes extends NoteEvent {
-  final String query;
 
-  const SearchNotes(this.query);
-
-  @override
-  List<Object> get props => [query];
-}

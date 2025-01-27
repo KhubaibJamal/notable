@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:notable/application/note/note_bloc.dart';
+import 'package:notable/application/string%20list%20bloc/string_list_bloc.dart';
 import 'package:notable/firebase_options.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notable/presentation/screens/home/home.dart';
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<NoteBloc>(create: (BuildContext context) => NoteBloc()),
+        BlocProvider<StringListBlock>(create: (BuildContext context) => StringListBlock()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
